@@ -20,9 +20,10 @@ public class NameClient {
 //    private static final String DEFAULT_HOST = "129.28.194.119";
 //    private static final String DEFAULT_HOST = "35.221.214.238";
 
-    private static final int DEFAULT_PORT = 30000;//nginx
+//    private static final int DEFAULT_PORT = 30000;//nginx
 //    private static final int DEFAULT_PORT = 80;//apache2
 //    private static final int DEFAULT_PORT = 30888;//local server
+    private static final int DEFAULT_PORT = 8080;//haproxy
 
     private ManagedChannel managedChannel;
 
