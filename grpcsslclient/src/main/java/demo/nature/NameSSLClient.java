@@ -35,7 +35,10 @@ public class NameSSLClient {
 
 
     private static String certChainFilePath = "/certs/grpcclient.crt";
+    //换cert测试双向认证有没有生效
+//    private static String certChainFilePath = "/certs/grpcserver.crt";
 
+//    private static String privateKeyFilePath = "/certs/grpcserver.key";
     private static String privateKeyFilePath = "/certs/grpcclient.key";
 
 
