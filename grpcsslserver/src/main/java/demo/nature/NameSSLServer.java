@@ -10,6 +10,7 @@ package demo.nature;
 import io.grpc.Server;
 import io.grpc.netty.GrpcSslContexts;
 import io.grpc.netty.NettyServerBuilder;
+import io.netty.handler.ssl.ClientAuth;
 import io.netty.handler.ssl.SslContextBuilder;
 
 import java.io.File;
@@ -32,6 +33,11 @@ public class NameSSLServer {
 
     private String privateKeyFilePath = "/certs/grpcserver.key";
 
+
+    private static final String trustCertCollectionFilePath = "/certs/client-ca.crt";
+//    private static final String trustCertCollectionFilePath = "/certs/ca.crt";
+
+
 //    public NameSSLServer(int port) {
 //        this(port,ServerBuilder.forPort(port));
 //    }
@@ -39,8 +45,11 @@ public class NameSSLServer {
     private SslContextBuilder getSslContextBuilder() throws URISyntaxException {
         File certChainFile = new File(getClass().getResource(certChainFilePath).toURI());
         File privateKeyFile = new File(getClass().getResource(privateKeyFilePath).toURI());
+        File trustCertCollectionFile = new File(getClass().getResource(trustCertCollectionFilePath).toURI());
+
+
         SslContextBuilder sslClientContextBuilder = SslContextBuilder.forServer(certChainFile,
-                privateKeyFile);
+                privateKeyFile).trustManager(trustCertCollectionFile).clientAuth(ClientAuth.REQUIRE);
 //        if (trustCertCollectionFilePath != null) {
 //            sslClientContextBuilder.trustManager(new File(trustCertCollectionFilePath));
 //            sslClientContextBuilder.clientAuth(ClientAuth.REQUIRE);
@@ -55,7 +64,9 @@ public class NameSSLServer {
         //构造服务器，添加我们实际的服务
         server = NettyServerBuilder.forPort(port)
                 .addService(new NameSSLServiceImplBaseImpl())
+//                .sslContext(getSslContextBuilder().build())
                 .sslContext(getSslContextBuilder().build())
+
                 .build();
 //                .start();
 

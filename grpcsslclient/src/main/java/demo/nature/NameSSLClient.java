@@ -28,10 +28,16 @@ public class NameSSLClient {
 
 //    private static final int DEFAULT_PORT = 30000;//nginx
 //    private static final int DEFAULT_PORT = 80;//apache2
-//    private static final int DEFAULT_PORT = 30888;//local server
-    private static final int DEFAULT_PORT = 30001;//haproxy certs
+    private static final int DEFAULT_PORT = 30888;//local server
+//    private static final int DEFAULT_PORT = 30001;//haproxy certs
 
     private static final String trustCertCollectionFilePath = "/certs/ca.crt";
+
+
+    private static String certChainFilePath = "/certs/grpcclient.crt";
+
+    private static String privateKeyFilePath = "/certs/grpcclient.key";
+
 
     private ManagedChannel managedChannel;
 
@@ -44,6 +50,10 @@ public class NameSSLClient {
 
         File trustCertCollectionFile = new File(NameSSLClient.class.getResource(trustCertCollectionFilePath).toURI());
 
+        File certChainFile = new File(NameSSLClient.class.getResource(certChainFilePath).toURI());
+        File privateKeyFile = new File(NameSSLClient.class.getResource(privateKeyFilePath).toURI());
+
+        builder.keyManager(certChainFile, privateKeyFile);
         builder.trustManager(trustCertCollectionFile);
 
 

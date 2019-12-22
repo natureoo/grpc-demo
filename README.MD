@@ -1,5 +1,7 @@
 grpc ssl demo, 可使用haproxy route request
 
+
+##--------server端-----------------------
 ##使用openssl工具生成一个Root CA 私钥
 openssl genrsa -out ca.key 1024
 
@@ -27,3 +29,31 @@ openssl verify -verbose -CAfile ca.crt grpcserver.crt
 ##查看证书内容
 openssl x509 -in ca.crt -text -noout
 openssl x509 -in grpcserver.crt -text -noout
+
+
+##--------client端-----------------------
+
+##使用openssl工具生成一个client Root CA 私钥
+openssl genrsa -out client-ca.key 1024
+
+##生成client Root CA证书, Comman Name 为clientroot.com
+openssl req -new -x509 -days 3650 -subj "/CN=为clientroot.com"    -key client-ca.key -out client-ca.crt
+
+##生成client端私钥
+openssl genrsa -out grpcclient.key.rsa 1024
+
+##client端私钥必须无密码
+openssl pkcs8 -topk8 -in grpcclient.key.rsa -out grpcclient.key -nocrypt
+
+##生成client端证书csr, Comman Name clientdemo.com, 该comman name不能与Root CA common name相同
+openssl req -new -subj "/CN=clientdemo.com" -key grpcclient.key -out grpcclient.csr
+
+##生成server端证书
+openssl x509 -req -sha256     -CA client-ca.crt -CAkey client-ca.key -CAcreateserial -days 3650     -in grpcclient.csr     -out grpcclient.crt
+
+
+cat grpcclient.crt grpcclient.key > grpcclient.pem
+
+
+##verify certs
+openssl verify -verbose -CAfile client-ca.crt grpcclient.crt
