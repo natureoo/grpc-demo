@@ -11,6 +11,7 @@ import io.grpc.examples.nameserver.Ip;
 import io.grpc.examples.nameserver.Name;
 import io.grpc.examples.nameserver.NameServiceGrpc;
 import io.grpc.netty.GrpcSslContexts;
+import io.grpc.netty.NegotiationType;
 import io.grpc.netty.NettyChannelBuilder;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
@@ -66,7 +67,9 @@ public class NameSSLClient {
     public NameSSLClient(String host, int port) throws SSLException, URISyntaxException {
 
         this(NettyChannelBuilder.forAddress(host, port)
+                .negotiationType(NegotiationType.TLS)
                 .overrideAuthority("demo.com")//demo.com input by generating server1.csr
+//                .overrideAuthority("root.com")//demo.com input by generating server1.csr
                 .sslContext(buildSslContext())
                 .build());
 
