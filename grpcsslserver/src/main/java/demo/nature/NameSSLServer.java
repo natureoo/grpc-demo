@@ -49,7 +49,9 @@ public class NameSSLServer {
 
 
         SslContextBuilder sslClientContextBuilder = SslContextBuilder.forServer(certChainFile,
-                privateKeyFile).trustManager(trustCertCollectionFile).clientAuth(ClientAuth.REQUIRE);
+                privateKeyFile)
+                .trustManager(trustCertCollectionFile)
+                .clientAuth(ClientAuth.REQUIRE);
 //        if (trustCertCollectionFilePath != null) {
 //            sslClientContextBuilder.trustManager(new File(trustCertCollectionFilePath));
 //            sslClientContextBuilder.clientAuth(ClientAuth.REQUIRE);
