@@ -3,13 +3,13 @@ grpc ssl demo, 可使用haproxy route request
 
 ##--------server端-----------------------
 ##使用openssl工具生成一个Root CA 私钥
-openssl genrsa -out ca.key 1024
+openssl genrsa -out ca.key 2048
 
 ##生成Root CA证书, Comman Name 为root.com
 openssl req -new -x509 -days 3650 -subj "/CN=root.com"    -key ca.key -out ca.crt
 
 ##生成server端私钥
-openssl genrsa -out grpcserver.key.rsa 1024
+openssl genrsa -out grpcserver.key.rsa 2048
 
 ##server端私钥必须无密码
 openssl pkcs8 -topk8 -in grpcserver.key.rsa -out grpcserver.key -nocrypt
@@ -34,13 +34,13 @@ openssl x509 -in grpcserver.crt -text -noout
 ##--------client端-----------------------
 
 ##使用openssl工具生成一个client Root CA 私钥
-openssl genrsa -out client-ca.key 1024
+openssl genrsa -out client-ca.key 2048
 
 ##生成client Root CA证书, Comman Name 为clientroot.com
-openssl req -new -x509 -days 3650 -subj "/CN=为clientroot.com"    -key client-ca.key -out client-ca.crt
+openssl req -new -x509 -days 3650 -subj "/CN=clientroot.com"    -key client-ca.key -out client-ca.crt
 
 ##生成client端私钥
-openssl genrsa -out grpcclient.key.rsa 1024
+openssl genrsa -out grpcclient.key.rsa 2048
 
 ##client端私钥必须无密码
 openssl pkcs8 -topk8 -in grpcclient.key.rsa -out grpcclient.key -nocrypt
@@ -48,7 +48,7 @@ openssl pkcs8 -topk8 -in grpcclient.key.rsa -out grpcclient.key -nocrypt
 ##生成client端证书csr, Comman Name clientdemo.com, 该comman name不能与Root CA common name相同
 openssl req -new -subj "/CN=clientdemo.com" -key grpcclient.key -out grpcclient.csr
 
-##生成server端证书
+##生成client端证书
 openssl x509 -req -sha256     -CA client-ca.crt -CAkey client-ca.key -CAcreateserial -days 3650     -in grpcclient.csr     -out grpcclient.crt
 
 
