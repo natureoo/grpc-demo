@@ -29,12 +29,12 @@ public class NameSSLServer {
 
     private Server server;
 
-    private String certChainFilePath = "/certs/1024/grpcserver.crt";
+    private String certChainFilePath = "/certs/grpcserver.crt";
 
-    private String privateKeyFilePath = "/certs/1024/grpcserver.key";
+    private String privateKeyFilePath = "/certs/grpcserver.key";
 
 
-    private static final String trustCertCollectionFilePath = "/certs/1024/client-ca.crt";
+    private static final String trustCertCollectionFilePath = "/certs/client-ca.crt";
 //    private static final String trustCertCollectionFilePath = "/certs/ca.crt";
 
 

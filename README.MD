@@ -1,4 +1,3 @@
-grpc ssl demo, 可使用haproxy route request
 
 
 ##--------server端-----------------------
@@ -57,3 +56,20 @@ cat grpcclient.crt grpcclient.key > grpcclient.pem
 
 ##verify certs
 openssl verify -verbose -CAfile client-ca.crt grpcclient.crt
+
+
+
+##ecdsa
+openssl ecparam -genkey -name prime256v1 -out nginx02-orderer.key
+
+
+openssl req -new -SHA256 -subj "/C=US/ST=California/L=San Francisco/CN=orderer.example.com" -key nginx02-orderer.key -nodes -out nginx02-orderer.csr
+
+
+openssl req -in nginx02-orderer.csr -noout -text
+
+openssl x509 -req -SHA256  -days 3650 -in nginx02-orderer.csr -CA tlsca.example.com-cert.pem -CAkey a2b5b526ffa0bc893ef07aca51fa7b915577bcdde9b770b29934676d12507c09_sk -CAcreateserial -out nginx02-orderer.crt
+
+
+
+openssl x509 -req -SHA256 -extfile v3.ext -days 3650 -in nginx01-peer02.csr -CA tlsca.org1.example.com-cert.pem -CAkey 666612008420107322b873f3f9ee9cf9ceae036ad88070846503c2c42ca245bb_sk -CAcreateserial -out nginx01-peer02-v3.crt
